@@ -1,0 +1,18 @@
+{ parent: 'theparent',
+    path: 'thepath',
+    name: 'default',
+    type: 'directory',
+    children:
+    [{
+        parent: 'parent2',
+        path: 'thepath2',
+        name: 'thename2',
+        type: 'file'
+        },
+        {
+            parent: 'parent3',
+            path: 'thepath3',
+            name: 'thename3',
+            type: 'file'
+            }
+    ]}
