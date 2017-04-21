@@ -1,9 +1,9 @@
 CFLAGS=-ggdb -std=c++11 -Wall
 
-all: directoryEntry.x
+all: de.x
 
-directoryEntry.x: main.o lex.o directoryEntry.o token.o directoryNode.o
-	g++ $(CFLAGS) main.o lex.o directoryEntry.o token.o directoryNode.o -o directoryEntry.x
+de.x: main.o lex.o directoryEntry.o token.o directoryNode.o
+	g++ $(CFLAGS) main.o lex.o directoryEntry.o token.o directoryNode.o -o de.x
 
 main.o: main.cpp lex.o token.o directoryNode.o directoryEntry.o
 	g++ $(CFLAGS) -c main.cpp -o main.o
@@ -22,4 +22,4 @@ token.o: token.cpp token.hpp
 
 run:
 	make all
-	./directoryEntry.x
+	./de.x long.json

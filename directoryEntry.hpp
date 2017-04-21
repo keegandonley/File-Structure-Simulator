@@ -27,7 +27,14 @@ private:
     DirectoryNode *cwd;
     DirectoryNode *getNode(std::string);
     DirectoryNode *getNodeHelp(std::string target);
-    DirectoryEntry *duplicate(DirectoryNode * current);
+    DirectoryNode *duplicate(DirectoryNode * current);
+    void find(DirectoryNode * current, std::vector<std::string> * files);
+    bool areTheSame(DirectoryNode * current1, DirectoryNode * current2);
+    bool hasSubstructure(DirectoryEntry *current, DirectoryEntry *dirEntry);
+    std::string findSubStart(DirectoryNode * current, DirectoryNode * target);
+    bool isEqual(DirectoryNode * A, DirectoryNode * B);
+
+
 };
 
 #endif

@@ -7,8 +7,13 @@
 #include <cstdlib>
 #include <iomanip>
 
+// Main test file
+// Keegan Donley
+// CS 315
+
 
 std::string getFileContents(std::string fileName);
+void InteractiveDemo(DirectoryEntry * directory);
 
 int main(int argc, const char * const argv[]) {
     // Validate input argument
@@ -25,6 +30,14 @@ int main(int argc, const char * const argv[]) {
 
 	DirectoryNode * structure = new DirectoryNode(tokens);
     DirectoryEntry * directory = new DirectoryEntry(structure);
+
+    std::string inputSub = getFileContents("sub.json");
+
+    // Tokenize using Lex
+    Lex * tokensSub = new Lex(input);
+
+    DirectoryNode * structureSub = new DirectoryNode(tokensSub);
+    DirectoryEntry * directorySub = new DirectoryEntry(structureSub);
 
 
     // // TEST depth()
@@ -71,24 +84,42 @@ int main(int argc, const char * const argv[]) {
     //     std::cout << file << std::endl;
     // std::cout << "Done testing ls()" << std::endl;
     //
-    // // TEST move()
-    // // std::cout << "\nTesting move()..." << std::endl;
-    // // directory -> move("lala","oops");
-    // // std::cout << "Done testing move()" << std::endl;
-    //
 
+    // directory -> cd();
     // Interactive tests
+    DirectoryEntry * duplicate = directory -> duplicate();
+    DirectoryEntry * duplicateSmall = directory -> duplicate("project1");
+    std::cout << "\ntest areTheSame (should be true then false)" << std::endl;
+    std::cout << "Result: " << directory -> areTheSame(duplicate) << std::endl;
+    std::cout << "Result: " << directory -> areTheSame(duplicateSmall) << std::endl;
+
+    std::cout << "Test hasSubstructure (should be true):\nResult: " << directory -> hasSubstructure(directorySub) << std::endl;
+
+
+    std::cout << "\n\nDemo of main tree structure";
+    InteractiveDemo(directory);
+    std::cout << "\n\nDemo of duplicated tree structure (behaves independently of changes made in previous tests)";
+    InteractiveDemo(duplicate);
+    std::cout << "\n\nDemo of duplicated tree at `project1` (behaves independently of changes made in previous tests)";
+    InteractiveDemo(duplicateSmall);
+
+    std::cout << "Done testing" << std::endl;
+
+    return 0;
+}
+
+void InteractiveDemo(DirectoryEntry * directory) {
     directory -> cd();
     std::cout << "\n\nInteractive demo for directory structure functions\n";
     std::cout << "Enter commands as you would in a normal shell\n";
-    std::cout << "Type logout to exit\n";
+    std::cout << "Type logout to exit and move on the the next test\n";
 
 
     std::string command, argument;
     std::cout << "\n[demo@sample ~]$ ";
     std::cin >> command;
     if (command == "logout")
-        return 0;
+        return;
     std::getline(std::cin, argument);
     argument.erase(argument.begin());
     while (command != "logout" && argument != "logout") {
@@ -118,6 +149,16 @@ int main(int argc, const char * const argv[]) {
             std::string from = argument.substr(0, delim);
             std::string to = argument.substr(delim + 1);
             directory -> move(from, to);
+        } else if (command == "find") {
+            std::vector<std::string> files;
+            if (argument == "") {
+                std::cout << "No path entered" << std::endl;
+            } else {
+                files = directory -> find(argument);
+                for (auto file : files) {
+                    std::cout << file << std::endl;
+                }
+            }
         } else {
             std::cout << "Invalid command "<< command << std::endl;
         }
@@ -126,13 +167,11 @@ int main(int argc, const char * const argv[]) {
         std::cout << "[demo@sample ~]$ ";
         std::cin >> command;
         if (command == "logout")
-            return 0;
+            return;
         std::getline(std::cin, argument);
         argument.erase(argument.begin());
     }
 
-
-    return 0;
 }
 
 

@@ -12,6 +12,9 @@ public:
 
     bool isFile() { return _isFile; }  // is this a file directory type?
     bool isDirectory() { return _isDirectory; }  // is this a directory, directory type?
+    void isFile(bool input) { _isFile = input; }
+    void isDirectory(bool input) { _isDirectory = input; }
+
 
     void addDirectoryNode(DirectoryNode *list) { children.push_back(list); }
     int numEntries() { return children.size(); }
@@ -25,6 +28,8 @@ public:
     std::string path() { return _path; }
     void path(std::string pStr) { _path = pStr; }
     void adjustPaths(DirectoryNode * fromNode, DirectoryNode * toNode);
+    void adjustPathsDupe(DirectoryNode * fromNode, DirectoryNode * toNode);
+
 
 
     std::string name() { return _name; }

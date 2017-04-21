@@ -95,22 +95,7 @@ DirectoryNode * DirectoryNode::buildStructure(Lex * tokens) {
         if (current.isComma()) {
             current = tokens -> getToken();
         }
-        // If the next token isn't a brace or a comma, we need to put it back...
-        // else if (current.isLeftBrace()){
-        //     while (current.isLeftBrace()) {
-        //         tokens -> ungetToken();
-        //         DirectoryNode * temp = buildStructure(tokens);
-        //         node -> addDirectoryNode(temp);
-        //         current.printToken();
-        //     }
-        //
-        // } else {
-        //     current = tokens -> getToken();
-        // }
-
-
     }
-    std::cout << "Returning" << std::endl;
     return node;
 }
 
@@ -119,10 +104,25 @@ void DirectoryNode::adjustPaths(DirectoryNode * fromNode, DirectoryNode * toNode
     std::vector<DirectoryNode *> children = fromNode -> getChildren();
     for (auto child : children) {
         std::string newPath = child -> getParentNode() -> path() + "/" + child -> name();
-        std::cout << "the new path is: " << newPath << std::endl;
         child -> path(newPath);
         if (child -> numChildren() > 0) {
             adjustPaths(child, toNode);
+        }
+    }
+}
+
+void DirectoryNode::adjustPathsDupe(DirectoryNode * fromNode, DirectoryNode * toNode) {
+    std::vector<DirectoryNode *> children = fromNode -> getChildren();
+    for (auto child : children) {
+        std::string childPath = child -> path();
+        std::string toRemove = name() + "/";
+        std::string::size_type count = childPath.find(toRemove);
+        if (count != std::string::npos)
+            childPath.erase(count, toRemove.length());
+        std::string newPath = childPath;
+        child -> path(newPath);
+        if (child -> numChildren() > 0) {
+            adjustPathsDupe(child, toNode);
         }
     }
 }
