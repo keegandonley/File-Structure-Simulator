@@ -23,3 +23,6 @@ token.o: token.cpp token.hpp
 run:
 	make all
 	./de.x long.json
+
+clean:
+	rm *.o *.x
