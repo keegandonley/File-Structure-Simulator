@@ -8,6 +8,7 @@
 class DirectoryEntry {
 public:
     DirectoryEntry();
+    DirectoryEntry(DirectoryNode * root);
     int depth();
     std::string pwd();
     std::string cd();
@@ -24,6 +25,8 @@ public:
 private:
     DirectoryNode *rootDir;
     DirectoryNode *cwd;
+    DirectoryNode *getNode(std::string);
+    DirectoryNode *getNodeHelp(std::string target);
 };
 
 #endif

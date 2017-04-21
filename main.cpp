@@ -22,6 +22,28 @@ int main(int argc, const char * const argv[]) {
     Lex * tokens = new Lex(input);
 
 	DirectoryNode * structure = new DirectoryNode(tokens);
+    DirectoryEntry * directory = new DirectoryEntry(structure);
+
+    // TEST PWD()
+    std::cout << "\nTesting pwd()..." << std::endl;
+    std::cout << directory -> pwd() << std::endl;
+    std::cout << "Done testing pwd()" << std::endl;
+
+    // TEST cd(STR)
+    // TODO: Handle not finding the directory in question
+    // TODO: Does the path matter?
+    std::cout << "\nTesting cd(std::string)..." << std::endl;
+    std::cout << "Looking for \"project1/RomanCalculatorStudentFiles\", got to directory: " << directory -> cd("project1/RomanCalculatorStudentFiles") << std::endl;
+    std::cout << "pwd is now: " << directory -> pwd() << std::endl;
+    // std::cout << "Looking for \"tasks\", got to directory: " << directory -> cd("tasks") << std::endl;
+    // std::cout << "pwd is now: " << directory -> pwd() << std::endl;
+    std::cout << "Done testing cd(std::string)" << std::endl;
+
+    // TEST cd()
+    std::cout << "\nTesting cd(std::string)..." << std::endl;
+    std::cout << "Changed to directory: " << directory -> cd() << std::endl;
+    std::cout << "pwd is now: " << directory -> pwd() << std::endl;
+    std::cout << "Done testing cd(std::string)" << std::endl;
 
     return 0;
 }

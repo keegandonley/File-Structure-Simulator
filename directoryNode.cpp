@@ -3,11 +3,18 @@
 #include "token.hpp"
 #include <cstdlib>
 
-#define dev true
+#define dev false
 #define print false
 
 DirectoryNode::DirectoryNode(Lex * tokens) {
-    DirectoryNode * structure = buildStructure(tokens);
+    DirectoryNode * temp = buildStructure(tokens);
+    _parent = temp -> Parent();
+    _path = temp -> path();
+    _name = temp -> name();
+    _type = temp -> type();
+    _isFile = temp -> isFile();
+    _isDirectory = temp -> isDirectory();
+    children = temp -> getChildren();
 }
 
 DirectoryNode * DirectoryNode::buildStructure(Lex * tokens) {
@@ -61,9 +68,10 @@ DirectoryNode * DirectoryNode::buildStructure(Lex * tokens) {
         if (current.isLeftBracket()) {
             current = tokens -> getToken();
             while (current.isLeftBrace()) {
-                std::cout << "\n\n" << std::endl;
+                if (dev) {std::cout << "\n\n" << std::endl;}
                 tokens -> ungetToken();
                 DirectoryNode * temp = buildStructure(tokens);
+                temp -> addParentNode(node);
                 node -> addDirectoryNode(temp);
                 current = tokens -> getToken();
                 if (current.isComma())
@@ -81,8 +89,9 @@ DirectoryNode * DirectoryNode::buildStructure(Lex * tokens) {
 
         current = tokens -> getToken();
 
-        if (current.isRightBrace())
+        if (current.isRightBrace()) {
             return node;
+        }
         if (current.isComma()) {
             current = tokens -> getToken();
         }
@@ -101,5 +110,6 @@ DirectoryNode * DirectoryNode::buildStructure(Lex * tokens) {
 
 
     }
+    std::cout << "Returning" << std::endl;
     return node;
 }

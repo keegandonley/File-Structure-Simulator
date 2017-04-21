@@ -19,6 +19,8 @@ public:
 
     std::string Parent() { return _parent; }
     void parent(std::string pStr) { _parent = pStr; }
+    void addParentNode(DirectoryNode * parent) {parentNode = parent; }
+    DirectoryNode * getParentNode() {return parentNode; }
 
     std::string path() { return _path; }
     void path(std::string pStr) { _path = pStr; }
@@ -28,6 +30,9 @@ public:
 
     std::string type() { return _type; }
     void type(std::string pStr) { _type = pStr; }
+
+    int numChildren() {return children.size(); }
+
 
 
 private:
