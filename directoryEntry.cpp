@@ -114,7 +114,7 @@ std::vector<std::string> DirectoryEntry::ls() {
     std::vector<std::string> files;
     for (auto child : children) {
         std::string entry = child -> name();
-        for (unsigned int i = 0; i < (LSLINELENGTH-child->name().size()); i++)
+        for (int i = 0; i < (LSLINELENGTH-child->name().size()); i++)
             entry += " ";
         entry += child -> type();
         files.push_back(entry);
@@ -127,7 +127,7 @@ std::vector<std::string> DirectoryEntry::ls(std::string target) {
     std::vector<std::string> files;
     for (auto child : children) {
         std::string entry = child -> name();
-    	for (unsigned int i = 0; i < (LSLINELENGTH-child->name().size()); i++)
+    	for (int i = 0; i < (LSLINELENGTH-child->name().size()); i++)
     		entry += " ";
     	entry += child -> type();
             files.push_back(entry);
@@ -208,7 +208,7 @@ bool DirectoryEntry::hasSubstructure(DirectoryEntry *dirEntry) {
     std::string newdir = findSubStart(this -> rootDir, dirEntry -> rootDir);
     std::vector<std::string> current = this -> find(newdir);
     std::vector<std::string> dirEnt = dirEntry -> find("~");
-    for (unsigned int i = 0; i != current.size(); ++i) {
+    for (int i = 0; i != current.size(); ++i) {
         if (current[i] != dirEnt[i]) {
             return false;
         }
@@ -237,7 +237,7 @@ bool DirectoryEntry::isEqual(DirectoryNode * A, DirectoryNode * B) {
 bool DirectoryEntry::areTheSame(DirectoryEntry *dirEntry) {
     std::vector<std::string> current = this -> find("~");
     std::vector<std::string> dirEnt = dirEntry -> find("~");
-    for (unsigned int i = 0; i != current.size(); ++i) {
+    for (int i = 0; i != current.size(); ++i) {
         if (current[i] != dirEnt[i])
             return false;
     }
