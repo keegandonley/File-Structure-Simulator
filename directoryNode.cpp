@@ -8,12 +8,12 @@
 
 DirectoryNode::DirectoryNode(Lex * tokens) {
     DirectoryNode * temp = buildStructure(tokens);
+    _isFile = temp -> isFile();
+    _isDirectory = temp -> isDirectory();
     _parent = temp -> Parent();
     _path = temp -> path();
     _name = temp -> name();
     _type = temp -> type();
-    _isFile = temp -> isFile();
-    _isDirectory = temp -> isDirectory();
     children = temp -> getChildren();
 }
 

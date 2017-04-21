@@ -1,4 +1,4 @@
-CFLAGS=-ggdb -std=c++11
+CFLAGS=-ggdb -std=c++11 -Wall
 
 all: directoryEntry.x
 

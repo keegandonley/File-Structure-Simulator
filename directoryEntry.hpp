@@ -27,6 +27,7 @@ private:
     DirectoryNode *cwd;
     DirectoryNode *getNode(std::string);
     DirectoryNode *getNodeHelp(std::string target);
+    DirectoryEntry *duplicate(DirectoryNode * current);
 };
 
 #endif

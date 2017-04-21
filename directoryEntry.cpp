@@ -3,9 +3,12 @@
 #include <iostream>
 #include <string>
 
+DirectoryEntry::DirectoryEntry() {
+    rootDir = nullptr;
+    cwd = nullptr;
+}
 
 DirectoryEntry::DirectoryEntry(DirectoryNode * root) {
-    std::cout << "Constructor set the root and cwd of the directory!" << std::endl;
     rootDir = root;
     cwd = root;
 }
@@ -15,14 +18,15 @@ DirectoryNode *DirectoryEntry::getNode(std::string path) {
 
     std::string directory = "";
     DirectoryNode * current;
+    DirectoryNode * restore = cwd;
     for (char i : path) {
         if (i != '/') {
             directory += i;
         } else if (i == '/') {
             current = getNodeHelp(directory);
             if (current == nullptr) {
-                delete current;
-                exit (1);
+                cwd = restore;
+                return cwd;
             }
             cwd = current;
             directory = "";
@@ -31,35 +35,54 @@ DirectoryNode *DirectoryEntry::getNode(std::string path) {
     }
     current = getNodeHelp(directory);
     if (current == nullptr) {
-        delete current;
-        std::cout << "Invalid directory" << std::endl;
-        exit (1);
+        return restore;
     }
+    cwd = restore;
     return current;
 }
 
 DirectoryNode * DirectoryEntry::getNodeHelp(std::string target) {
     if (target == "")
-        return nullptr;
+        return cwd;
+    else if (target == "..") {
+        if (cwd -> getParentNode() != nullptr) {
+            return cwd -> getParentNode();
+        } else {
+            return cwd;
+        }
+    } else if (target == ".") {
+        return cwd;
+    } else if (target == "~") {
+        return rootDir;
+    }
 
     if (cwd -> numChildren() > 0) {
         std::vector<DirectoryNode *> childrenTemp = cwd -> getChildren();
         for ( auto child : childrenTemp) {
             if (child -> name() == target) {
                 if (child -> type() != "directory") {
-                    std::cout << "Not a directory" << std::endl;
-                    return nullptr;
+                    return cwd;
                 } else {
                     return child;
                 }
             }
         }
     }
-    return nullptr;
+    return cwd;
 }
 
+int DirectoryEntry::depth() {
+    std::string currentDir = cwd -> path();
+    int count = 0;
+    for (char i : currentDir )
+        if (i == '/')
+            count++;
+    return count + 1;
+}
+
+
 std::string DirectoryEntry::pwd() {
-    return cwd -> path();
+    return rootDir -> name() + '/' + cwd -> path();
 }
 
 std::string DirectoryEntry::cd(std::string path) {
@@ -81,4 +104,40 @@ std::vector<std::string> DirectoryEntry::ls() {
         files.push_back(entry);
     }
     return files;
+}
+
+std::vector<std::string> DirectoryEntry::ls(std::string target) {
+    std::vector<DirectoryNode*> children = getNode(target) -> getChildren();
+    std::vector<std::string> files;
+    for (auto child : children) {
+        std::string entry = child -> name() + "\t" + child -> type();
+        files.push_back(entry);
+    }
+    return files;
+}
+
+DirectoryEntry *DirectoryEntry::duplicate() {
+    return duplicate(rootDir);
+}
+
+DirectoryEntry *DirectoryEntry::duplicate(DirectoryNode * current) {
+    return new DirectoryEntry();
+}
+
+void DirectoryEntry::move(std::string fromPath, std::string toPath) {
+    if (fromPath == toPath)
+        return;
+    DirectoryNode * fromNode = getNode(fromPath);
+    DirectoryNode * toLocation = getNode(toPath);
+    if (toLocation -> type() != "directory")
+        return;
+    fromNode -> addParentNode(toLocation);
+    toLocation -> addDirectoryNode(fromNode);
+    // Get the children of the parent
+    std::vector<DirectoryNode *> children = fromNode -> getParentNode() -> getChildren();
+    std::vector<DirectoryNode *> temp;
+    for (auto child : children)
+        if (child -> path() != fromNode -> path())
+            temp.push_back(child);
+    fromNode -> setChildren(temp);
 }

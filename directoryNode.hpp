@@ -7,7 +7,7 @@
 
 class DirectoryNode {
 public:
-    DirectoryNode(): _isFile(false), _isDirectory(false), _parent(""), _path(""), _name(""), _type("") {}
+    DirectoryNode(): _parent(""), _path(""), _name(""), _type(""), _isFile(false), _isDirectory(false) {}
     DirectoryNode(Lex * tokens);
 
     bool isFile() { return _isFile; }  // is this a file directory type?
@@ -32,6 +32,7 @@ public:
     void type(std::string pStr) { _type = pStr; }
 
     int numChildren() {return children.size(); }
+    void setChildren(std::vector<DirectoryNode *> newChildren) {children = newChildren;}
 
 
 
