@@ -44,6 +44,11 @@ Testing areTheSame()
 -   My test of this in main() should be true then false when using long.json, and should be true then true
     when using short.json
 
+    This function and hasSubstructure both do not take into account that fact that files can be in different orders -
+    All children must be in the same order in both structures for them to return true. It was unclear whether this
+    is the proper behavior or not, but it is one caveat to keep in mind.
+    
+
 NOTES
 *   In some cases I was unsure as to the exact workings of a function and how the results
     should be formatted. In those situations, I attempted to follow the behavior of a real
