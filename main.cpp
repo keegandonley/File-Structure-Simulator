@@ -121,7 +121,9 @@ void InteractiveDemo(DirectoryEntry * directory) {
     if (command == "logout")
         return;
     std::getline(std::cin, argument);
-    argument.erase(argument.begin());
+    if (argument.length() > 0) {
+        argument.erase(argument.begin());
+    }
     while (command != "logout" && argument != "logout") {
 
         if (command == "cd") {
@@ -169,7 +171,9 @@ void InteractiveDemo(DirectoryEntry * directory) {
         if (command == "logout")
             return;
         std::getline(std::cin, argument);
-        argument.erase(argument.begin());
+        if (argument.length() > 0) {
+            argument.erase(argument.begin());
+        }
     }
 
 }
