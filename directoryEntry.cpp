@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+const int LSLINELENGTH = 40;
+
 DirectoryEntry::DirectoryEntry() {
     rootDir = nullptr;
     cwd = nullptr;
@@ -60,12 +62,7 @@ DirectoryNode * DirectoryEntry::getNodeHelp(std::string target) {
         std::vector<DirectoryNode *> childrenTemp = cwd -> getChildren();
         for ( auto child : childrenTemp) {
             if (child -> name() == target) {
-                if (child -> type() != "directory") {
-                    std::cout << "cd: " << target << ": Not a directory" << std::endl;
-                    return cwd;
-                } else {
-                    return child;
-                }
+                return child;
             }
         }
     }
@@ -91,6 +88,10 @@ std::string DirectoryEntry::pwd() {
 
 std::string DirectoryEntry::cd(std::string path) {
     DirectoryNode * temp = getNode(path);
+    if (temp -> type() != "directory") {
+        std::cout << "cd: " << temp -> name() << ": Not a directory" << std::endl;
+        return cwd -> name();
+    }
     cwd = temp;
     return temp -> name();
 }
@@ -104,7 +105,10 @@ std::vector<std::string> DirectoryEntry::ls() {
     std::vector<DirectoryNode*> children = cwd -> getChildren();
     std::vector<std::string> files;
     for (auto child : children) {
-        std::string entry = child -> name() + "\t" + child -> type();
+        std::string entry = child -> name();
+        for (int i = 0; i < (LSLINELENGTH-child->name().size()); i++)
+            entry += " ";
+        entry += child -> type();
         files.push_back(entry);
     }
     return files;
@@ -114,8 +118,11 @@ std::vector<std::string> DirectoryEntry::ls(std::string target) {
     std::vector<DirectoryNode*> children = getNode(target) -> getChildren();
     std::vector<std::string> files;
     for (auto child : children) {
-        std::string entry = child -> name() + "\t" + child -> type();
-        files.push_back(entry);
+        std::string entry = child -> name();
+    	for (int i = 0; i < (LSLINELENGTH-child->name().size()); i++)
+    		entry += " ";
+    	entry += child -> type();
+            files.push_back(entry);
     }
     return files;
 }
@@ -129,19 +136,24 @@ DirectoryEntry *DirectoryEntry::duplicate(DirectoryNode * current) {
 }
 
 void DirectoryEntry::move(std::string fromPath, std::string toPath) {
-    if (fromPath == toPath)
+    if (fromPath == toPath || toPath == ".")
         return;
     DirectoryNode * fromNode = getNode(fromPath);
     DirectoryNode * toLocation = getNode(toPath);
-    if (toLocation -> type() != "directory")
+    if (toLocation -> type() != "directory"){
+        std::cout << toLocation -> name() << " is not a directory" << std::endl;
         return;
-    fromNode -> addParentNode(toLocation);
-    toLocation -> addDirectoryNode(fromNode);
-    // Get the children of the parent
+    }
     std::vector<DirectoryNode *> children = fromNode -> getParentNode() -> getChildren();
     std::vector<DirectoryNode *> temp;
     for (auto child : children)
-        if (child -> path() != fromNode -> path())
+        if (child -> path() != fromNode -> path()) {
             temp.push_back(child);
-    fromNode -> setChildren(temp);
+        }
+    fromNode -> getParentNode() -> setChildren(temp);
+    std::string newPath = toLocation -> path() + "/" + fromNode -> name();
+    fromNode -> path(newPath);
+    fromNode -> adjustPaths(fromNode, toLocation);
+    fromNode -> addParentNode(toLocation);
+    toLocation -> addDirectoryNode(fromNode);
 }

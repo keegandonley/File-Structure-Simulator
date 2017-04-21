@@ -24,6 +24,8 @@ public:
 
     std::string path() { return _path; }
     void path(std::string pStr) { _path = pStr; }
+    void adjustPaths(DirectoryNode * fromNode, DirectoryNode * toNode);
+
 
     std::string name() { return _name; }
     void name(std::string pStr) { _name = pStr; }

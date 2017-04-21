@@ -113,3 +113,16 @@ DirectoryNode * DirectoryNode::buildStructure(Lex * tokens) {
     std::cout << "Returning" << std::endl;
     return node;
 }
+
+
+void DirectoryNode::adjustPaths(DirectoryNode * fromNode, DirectoryNode * toNode) {
+    std::vector<DirectoryNode *> children = fromNode -> getChildren();
+    for (auto child : children) {
+        std::string newPath = child -> getParentNode() -> path() + "/" + child -> name();
+        std::cout << "the new path is: " << newPath << std::endl;
+        child -> path(newPath);
+        if (child -> numChildren() > 0) {
+            adjustPaths(child, toNode);
+        }
+    }
+}

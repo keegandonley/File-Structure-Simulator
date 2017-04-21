@@ -6,7 +6,6 @@
 #include <fstream>
 #include <cstdlib>
 #include <iomanip>
-#include <regex>
 
 
 std::string getFileContents(std::string fileName);
@@ -28,55 +27,55 @@ int main(int argc, const char * const argv[]) {
     DirectoryEntry * directory = new DirectoryEntry(structure);
 
 
-    // TEST depth()
-    directory -> cd("project1/RomanCalculatorStudentFiles");
-    std::cout << "\nTesting depth()..." << std::endl;
-    int depth = directory -> depth();
-    std::cout << depth << std::endl;
-    std::cout << "Done testing depth()" << std::endl;
-
-    // TEST PWD()
-    std::cout << "\nTesting pwd()..." << std::endl;
-    std::cout << directory -> pwd() << std::endl;
-    std::cout << "Done testing pwd()" << std::endl;
-
-    directory -> cd();
-
-    // TEST cd(STR)
-    std::cout << "\nTesting cd(std::string)..." << std::endl;
-    std::cout << "Looking for \"project3/dir_to_json\", got to directory: " << directory -> cd("project3/dir_to_json") << std::endl;
-    std::cout << "pwd is now: " << directory -> pwd() << std::endl;
-    std::cout << "Looking for \"node_modules\", got to directory: " << directory -> cd("node_modules") << std::endl;
-    std::cout << "pwd is now: " << directory -> pwd() << std::endl;
-    std::cout << "Looking for \"..\", got to directory: " << directory -> cd("..") << std::endl;
-    std::cout << "pwd is now: " << directory -> pwd() << std::endl;
-    std::cout << "Done testing cd(std::string)" << std::endl;
-
-    // TEST cd()
-    std::cout << "\nTesting cd()..." << std::endl;
-    std::cout << "Changed to directory: " << directory -> cd() << std::endl;
-    std::cout << "pwd is now: " << directory -> pwd() << std::endl;
-    std::cout << "Done testing cd()" << std::endl;
-
-    // TEST ls(std::string)
-    std::cout << "\nTesting ls(std::string)..." << std::endl;
-    std::vector<std::string> files = directory -> ls("project1");
-    for (auto file : files)
-        std::cout << file << std::endl;
-    std::cout << "Done testing ls(std::string)" << std::endl;
-
-    // TEST ls()
-    std::cout << "\nTesting ls()..." << std::endl;
-    std::vector<std::string> filess = directory -> ls();
-    for (auto file : filess)
-        std::cout << file << std::endl;
-    std::cout << "Done testing ls()" << std::endl;
-
-    // TEST move()
-    // std::cout << "\nTesting move()..." << std::endl;
-    // directory -> move("lala","oops");
-    // std::cout << "Done testing move()" << std::endl;
-
+    // // TEST depth()
+    // directory -> cd("project1/RomanCalculatorStudentFiles");
+    // std::cout << "\nTesting depth()..." << std::endl;
+    // int depth = directory -> depth();
+    // std::cout << depth << std::endl;
+    // std::cout << "Done testing depth()" << std::endl;
+    //
+    // // TEST PWD()
+    // std::cout << "\nTesting pwd()..." << std::endl;
+    // std::cout << directory -> pwd() << std::endl;
+    // std::cout << "Done testing pwd()" << std::endl;
+    //
+    // directory -> cd();
+    //
+    // // TEST cd(STR)
+    // std::cout << "\nTesting cd(std::string)..." << std::endl;
+    // std::cout << "Looking for \"project3/dir_to_json\", got to directory: " << directory -> cd("project3/dir_to_json") << std::endl;
+    // std::cout << "pwd is now: " << directory -> pwd() << std::endl;
+    // std::cout << "Looking for \"node_modules\", got to directory: " << directory -> cd("node_modules") << std::endl;
+    // std::cout << "pwd is now: " << directory -> pwd() << std::endl;
+    // std::cout << "Looking for \"..\", got to directory: " << directory -> cd("..") << std::endl;
+    // std::cout << "pwd is now: " << directory -> pwd() << std::endl;
+    // std::cout << "Done testing cd(std::string)" << std::endl;
+    //
+    // // TEST cd()
+    // std::cout << "\nTesting cd()..." << std::endl;
+    // std::cout << "Changed to directory: " << directory -> cd() << std::endl;
+    // std::cout << "pwd is now: " << directory -> pwd() << std::endl;
+    // std::cout << "Done testing cd()" << std::endl;
+    //
+    // // TEST ls(std::string)
+    // std::cout << "\nTesting ls(std::string)..." << std::endl;
+    // std::vector<std::string> files = directory -> ls("project1");
+    // for (auto file : files)
+    //     std::cout << file << std::endl;
+    // std::cout << "Done testing ls(std::string)" << std::endl;
+    //
+    // // TEST ls()
+    // std::cout << "\nTesting ls()..." << std::endl;
+    // std::vector<std::string> filess = directory -> ls();
+    // for (auto file : filess)
+    //     std::cout << file << std::endl;
+    // std::cout << "Done testing ls()" << std::endl;
+    //
+    // // TEST move()
+    // // std::cout << "\nTesting move()..." << std::endl;
+    // // directory -> move("lala","oops");
+    // // std::cout << "Done testing move()" << std::endl;
+    //
 
     // Interactive tests
     directory -> cd();
@@ -114,6 +113,11 @@ int main(int argc, const char * const argv[]) {
             std::cout << directory -> pwd() << std::endl;
         } else if (command == "depth") {
             std::cout << directory -> depth() << std::endl;
+        } else if (command == "move" || command == "mv") {
+            int delim = argument.find(' ');
+            std::string from = argument.substr(0, delim);
+            std::string to = argument.substr(delim + 1);
+            directory -> move(from, to);
         } else {
             std::cout << "Invalid command "<< command << std::endl;
         }
