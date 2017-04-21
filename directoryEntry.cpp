@@ -20,14 +20,22 @@ DirectoryNode *DirectoryEntry::getNode(std::string path) {
             directory += i;
         } else if (i == '/') {
             current = getNodeHelp(directory);
-            if (current == nullptr)
-                return nullptr;
+            if (current == nullptr) {
+                delete current;
+                exit (1);
+            }
             cwd = current;
             directory = "";
         }
 
     }
-    return getNodeHelp(directory);
+    current = getNodeHelp(directory);
+    if (current == nullptr) {
+        delete current;
+        std::cout << "Invalid directory" << std::endl;
+        exit (1);
+    }
+    return current;
 }
 
 DirectoryNode * DirectoryEntry::getNodeHelp(std::string target) {
@@ -65,6 +73,12 @@ std::string DirectoryEntry::cd() {
     return rootDir -> name();
 }
 
-std::vector<std::string> DirectoryEntry::ls(std::string path) {
-    DirectoryNode * target = getNode(path);
+std::vector<std::string> DirectoryEntry::ls() {
+    std::vector<DirectoryNode*> children = cwd -> getChildren();
+    std::vector<std::string> files;
+    for (auto child : children) {
+        std::string entry = child -> name() + "\t" + child -> type();
+        files.push_back(entry);
+    }
+    return files;
 }

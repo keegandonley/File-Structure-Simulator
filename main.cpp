@@ -45,6 +45,12 @@ int main(int argc, const char * const argv[]) {
     std::cout << "pwd is now: " << directory -> pwd() << std::endl;
     std::cout << "Done testing cd(std::string)" << std::endl;
 
+    // TEST ls()
+    std::cout << "\nTesting ls()..." << std::endl;
+    std::vector<std::string> files = directory -> ls();
+    for (auto file : files)
+        std::cout << file << std::endl;
+    std::cout << "Done testing ls()" << std::endl;
     return 0;
 }
 
