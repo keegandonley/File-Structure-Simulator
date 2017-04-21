@@ -86,7 +86,7 @@ int main(int argc, const char * const argv[]) {
 
 
     std::string command, argument;
-    std::cout << "\n$~demo: ";
+    std::cout << "\n[demo@sample ~]$ ";
     std::cin >> command;
     if (command == "logout")
         return 0;
@@ -112,12 +112,14 @@ int main(int argc, const char * const argv[]) {
             }
         } else if (command == "pwd") {
             std::cout << directory -> pwd() << std::endl;
+        } else if (command == "depth") {
+            std::cout << directory -> depth() << std::endl;
         } else {
             std::cout << "Invalid command "<< command << std::endl;
         }
 
 
-        std::cout << "$~demo: ";
+        std::cout << "[demo@sample ~]$ ";
         std::cin >> command;
         if (command == "logout")
             return 0;

@@ -61,6 +61,7 @@ DirectoryNode * DirectoryEntry::getNodeHelp(std::string target) {
         for ( auto child : childrenTemp) {
             if (child -> name() == target) {
                 if (child -> type() != "directory") {
+                    std::cout << "cd: " << target << ": Not a directory" << std::endl;
                     return cwd;
                 } else {
                     return child;
@@ -68,11 +69,14 @@ DirectoryNode * DirectoryEntry::getNodeHelp(std::string target) {
             }
         }
     }
+    std::cout << "cd: " << target << ": No such file or directory" << std::endl;
     return cwd;
 }
 
 int DirectoryEntry::depth() {
     std::string currentDir = cwd -> path();
+    if (cwd -> path() == rootDir -> path())
+        return 0;
     int count = 0;
     for (char i : currentDir )
         if (i == '/')
