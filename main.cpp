@@ -116,7 +116,7 @@ void InteractiveDemo(DirectoryEntry * directory) {
 
 
     std::string command, argument;
-    std::cout << "\n[demo@sample ~]$ ";
+    std::cout << "\n[demo@sample " << directory -> pwd() << "]$ ";
     std::cin >> command;
     if (command == "logout")
         return;
@@ -166,7 +166,7 @@ void InteractiveDemo(DirectoryEntry * directory) {
         }
 
 
-        std::cout << "[demo@sample ~]$ ";
+        std::cout << "[demo@sample " << directory -> pwd() << "]$ ";
         std::cin >> command;
         if (command == "logout")
             return;

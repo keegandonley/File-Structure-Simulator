@@ -28,6 +28,10 @@ Solution can be built using the command `make`. `make run` runs the program with
 
 # move() function
 -   Move can be accessed using either mv or move from within the demo
+    CAVEAT: On some occasions, the file that was moved to another directory doesn't disappear when using `ls`
+            until the directory has been changed to something else and then returned back. This only happens for the first
+            move command of a session, and after that subsequent move commands work properly. Otherwise,
+            move works well and takes special care to maintain proper paths.
 
 JSON parsing
 -   The program is able to parse a proper JSON file, however in some cases it doesn't catch all errors
@@ -47,7 +51,7 @@ Testing areTheSame()
     This function and hasSubstructure both do not take into account that fact that files can be in different orders -
     All children must be in the same order in both structures for them to return true. It was unclear whether this
     is the proper behavior or not, but it is one caveat to keep in mind.
-    
+
 
 NOTES
 *   In some cases I was unsure as to the exact workings of a function and how the results
