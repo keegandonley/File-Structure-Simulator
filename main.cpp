@@ -98,10 +98,6 @@ int main(int argc, const char * const argv[]) {
 
     std::cout << "\n\nDemo of main tree structure";
     InteractiveDemo(directory);
-    std::cout << "\n\nDemo of duplicated tree structure (behaves independently of changes made in previous tests)";
-    InteractiveDemo(duplicate);
-    std::cout << "\n\nDemo of duplicated tree at `project1` (behaves independently of changes made in previous tests)";
-    InteractiveDemo(duplicateSmall);
 
     std::cout << "Done testing" << std::endl;
 
